@@ -7,7 +7,7 @@
 | [MS1](#milestone-1) | V1.0 | | |
 |  | V1.1 | Submission script corrected| The submission script dates were incorrect and they are now corrected.<br />Please wait for yor professor to fetch the updated version |
 | [MS2](#milestone-2) | V1.0 |  |  |
-| [MS3](#milestone-3) | V1.0  |  | |
+| [MS3](#milestone-3) | V1.0  |  | Updated dates and tester program |
 | [MS4](#milestone-4) | V1.0  | |  |
 | [MS5](#milestone-5) | V1.0 |  | |
 
@@ -186,7 +186,7 @@ sets the error code value
 int systemYear()const;         
 ```
 
-returns the current system year (2021 for this semester)
+returns the current system year (2023 for this semester)
 
 ```C++
 bool bad()const;             
@@ -889,7 +889,7 @@ Before starting to develop milestone 3, please apply the following modifications
 - Add the following global variable (for testing purposes) to the top of the **sdds** namespace in Date.cpp.
 ```C++
    bool sdds_test = false;
-   int sdds_year = 2021;
+   int sdds_year = 2023;
    int sdds_mon = 12;
    int sdds_day = 25;
 ```
@@ -1074,18 +1074,17 @@ Returns true if the address of the **io** object is the same as the address of e
 #### `ostream& write(ostream& os) const`
 If the **os** argument is a console IO object (use **conIO()**), print **shelfId**, **title**, **membership** and **date** attributes as the following format (title is left-justified padded with dots)
 
-##### MS3 V1.1.1
 ```text
          1         2         3         4         5         6         7 
 1234567890123456789012345678901234567890123456789012345678901234567890
-| P001 | The Toronto Star.............. | 34037 | 2021/11/17 |
-| P007 | Macleans Magazine............. |  N/A  | 2021/11/11 |
+| P001 | The Toronto Star.............. | 34037 | 2023/11/17 |
+| P007 | Macleans Magazine............. |  N/A  | 2023/11/11 |
 ```
 Otherwise:
 
 Print the type() and then libRef, shelfId, title, membership and date attributes in a tab-separated format. 
 ```Text
-P	2001	P001	The Toronto Star	34037	2021/11/17
+P	2001	P001	The Toronto Star	34037	2023/11/17
 ```
 
 No newline is printed afterwards either way.
@@ -1140,121 +1139,7 @@ Make sure this object complies with the guidelines of the Rule of three so the c
 
 ## the Tester program
 
-```C++
-// Final Project Milestone 3
-// Periodical Publication 
-// File	ms3_tester.cpp
-// Version 1.0
-// Author	Fardad Soleimanloo
-// Revision History
-// -----------------------------------------------------------
-// Name               Date                 Reason
-// Fardad             2021/11/15		       Preliminary release
-/////////////////////////////////////////////////////////////////
-#include <iostream>
-#include <fstream>
-#include "Publication.h"
-#include "Utils.h"
-#include "Date.h"
-
-
-using namespace std;
-using namespace sdds;
-Publication readPublication(istream& istr) {
-   Publication P;
-   cin >> P;
-   return P;
-}
-Publication getNextRec(ifstream& ifstr) {
-   Publication P;
-   ifstr >> P;
-   ifstr.ignore(1000, '\n');
-   return P;
-}
-
-int main() {
-   sdds::sdds_test = true;
-   Publication pd;
-   cout << "An Invalid publication printout:" << endl;
-   cout << ">" << pd << "<" << endl;
-   cout << "Enter the following: " << endl
-      << "P1234" << endl
-      << "------------------------------" << endl;
-   pd = readPublication(cin);
-   if (!cin) {
-      cin.clear();
-      cin.ignore(1000, '\n');
-   }
-   else {
-      cout << "This is not supposed to be printed!" << endl;
-   }
-   cout << "You entered:" << endl;
-   cout << ">" << pd << "<" << endl;
-   cout << "Enter the following: " << endl
-      << "P123" << endl
-      << "Seneca Weekly" << endl
-      << "2021/13/17" << endl
-      << "------------------------------" << endl;
-   pd = readPublication(cin);
-   if (!cin) {
-      cin.clear();
-      cin.ignore(1000, '\n');
-   }
-   else {
-      cout << "This is not supposed to be printed!" << endl;
-   }
-   cout << "You entered:" << endl;
-   cout << ">" << pd << "<" << endl;
-   cout << "Enter the following: " << endl
-      << "P123" << endl
-      << "Seneca Weekly" << endl
-      << "2021/11/17" << endl
-      << "------------------------------" << endl;
-   pd = readPublication(cin);
-   cout << "You entered:" << endl;
-   cout << pd << endl;
-   cout << "And the title is agian: \"" << (const char*)pd << "\"" << endl;
-   pd.set(12345);
-   if (pd.onLoan()) {
-      cout << "Now this publication is on loan to a member with the id: 12345" << endl;
-      pd.resetDate();
-      cout << "The checkout date is: " << pd.checkoutDate() << endl;
-      pd.setRef(9999);
-      cout << "The library unique reference id is: " << pd.getRef() << endl;
-      cout << pd << endl;
-      cout << "----------------------------------------------------------------" << endl;
-    }
-   cout << "Adding the periodical publication to the end of the data file:" << endl;
-   ofstream fileout("Periodicals.txt", ios::app);
-   if (pd) {
-      cout << "appeneded to the file" << endl;
-      fileout << pd << endl;
-   }
-   fileout.close();
-   cout << endl << "Contents of the file:" << endl;
-   ifstream filein("Periodicals.txt");
-   char pType{};
-   for (int row = 1; filein; row++) {
-      filein >> pType;
-      if (pType != 'P') {
-         cout << "The Record type signature is supposed to be B, but it is: " << pType << endl;
-         filein.setstate(ios::failbit);
-      }
-      filein.ignore();
-      pd = getNextRec(filein);
-      if (filein) {
-         cout << (pd.onLoan() ? "|*" : "| ");
-         cout.width(4);
-         cout.fill(' ');
-         cout.setf(ios::right);
-         cout << row << (pd.onLoan()? "*": " ");
-         cout.unsetf(ios::right);
-         cout << pd << (pd == "Star" ? "<<<":"") << endl;
-      }
-   }
-   return 0;
-}
-```
+[ms3_tester.cpp](MS3/ms3_tester.cpp)
  
 ## Tester Output
 [MS3 tester output](MS3/output.md)
@@ -1379,7 +1264,6 @@ return true if the author's name exists and is not empty and the base class's op
 // Revision History
 // -----------------------------------------------------------
 // Name               Date                 Reason
-//                    This will not change the output
 /////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
@@ -1423,7 +1307,7 @@ int main() {
    cout << endl << "Enter the following: " << endl
       << "P123" << endl
       << "Seneca Handbook" << endl
-      << "2021/13/17" << endl
+      << "2023/13/17" << endl
       << "------------------------------" << endl;
    pd = readBook(cin);
    if (!cin) {
@@ -1438,7 +1322,7 @@ int main() {
    cout << endl << "Enter the following: " << endl
       << "P123" << endl
       << "The Story of My Experiments with Truth" << endl
-      << "2021/11/17" << endl
+      << "2023/11/17" << endl
       << "Mohandas Karamchand Gandhi" << endl
       << "------------------------------" << endl;
    pd = readBook(cin);
@@ -1553,7 +1437,6 @@ The logic below (in pubSel_Tester.cpp) is searching all the publications in "Lib
 // Revision History
 // -----------------------------------------------------------
 // Name               Date                 Reason
-//                    2021-11-27           Initial release
 /////////////////////////////////////////////////////////////////
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
@@ -1686,7 +1569,7 @@ First, get the type of publication to search for from the user. (user the type s
 Then print `"Publication Title: "` and get the title to search the PPA for. (up to 256 characters)
 
 Go through all the publications in the PPA and base on the method of search (all the items, on loan items or available ones) check each element and if the publication (pointed by the PPA element) is not deleted and type matches the selection of the user and the title contains the title the user entered, insert it into the PublicationSelector object. 
-#### MS5 V1.1
+
 If matches are found, sort the result and get the user's selection ***and return the library reference number***. If not print "No matches found!"
 
 If the user aborts at any stage print "Aborted!"
@@ -1709,14 +1592,14 @@ Publication Title: Harry
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | T343 | Harry Potter.................. | 65205 | 2021/11/19 | J. K. Rowling   |
-   2- | F861 | Harry Potter and the Chamber o |  N/A  | 2021/11/24 | J. K. Rowling   |
-   3- | C872 | Harry Potter and the Deathly H | 64984 | 2021/11/17 | J. K. Rowling   |
-   4- | C945 | Harry Potter and the Goblet of |  N/A  | 2021/11/14 | J. K. Rowling   |
-   5- | C332 | Harry Potter and the Half/Bloo | 85952 | 2021/11/22 | J. K. Rowling   |
-   6- | L290 | Harry Potter and the Order of  |  N/A  | 2021/11/11 | J. K. Rowling   |
-   7- | D208 | Harry Potter and the Philosoph | 72685 | 2021/11/19 | J. K. Rowling   |
-   8- | R856 | Harry Potter and the Prisoner  |  N/A  | 2021/11/10 | J. K. Rowling   |
+   1- | T343 | Harry Potter.................. | 65205 | 2023/11/19 | J. K. Rowling   |
+   2- | F861 | Harry Potter and the Chamber o |  N/A  | 2023/11/24 | J. K. Rowling   |
+   3- | C872 | Harry Potter and the Deathly H | 64984 | 2023/11/17 | J. K. Rowling   |
+   4- | C945 | Harry Potter and the Goblet of |  N/A  | 2023/11/14 | J. K. Rowling   |
+   5- | C332 | Harry Potter and the Half/Bloo | 85952 | 2023/11/22 | J. K. Rowling   |
+   6- | L290 | Harry Potter and the Order of  |  N/A  | 2023/11/11 | J. K. Rowling   |
+   7- | D208 | Harry Potter and the Philosoph | 72685 | 2023/11/19 | J. K. Rowling   |
+   8- | R856 | Harry Potter and the Prisoner  |  N/A  | 2023/11/10 | J. K. Rowling   |
 > X (to Exit)
 > Row Number(select publication)
 > x
@@ -1733,10 +1616,10 @@ Publication Title: Harry
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | T343 | Harry Potter.................. | 65205 | 2021/11/19 | J. K. Rowling   |
-   2- | C872 | Harry Potter and the Deathly H | 64984 | 2021/11/17 | J. K. Rowling   |
-   3- | C332 | Harry Potter and the Half/Bloo | 85952 | 2021/11/22 | J. K. Rowling   |
-   4- | D208 | Harry Potter and the Philosoph | 72685 | 2021/11/19 | J. K. Rowling   |
+   1- | T343 | Harry Potter.................. | 65205 | 2023/11/19 | J. K. Rowling   |
+   2- | C872 | Harry Potter and the Deathly H | 64984 | 2023/11/17 | J. K. Rowling   |
+   3- | C332 | Harry Potter and the Half/Bloo | 85952 | 2023/11/22 | J. K. Rowling   |
+   4- | D208 | Harry Potter and the Philosoph | 72685 | 2023/11/19 | J. K. Rowling   |
 > X (to Exit)
 > Row Number(select publication)
 >
@@ -1752,10 +1635,10 @@ Publication Title: Harry
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | F861 | Harry Potter and the Chamber o |  N/A  | 2021/11/24 | J. K. Rowling   |
-   2- | C945 | Harry Potter and the Goblet of |  N/A  | 2021/11/14 | J. K. Rowling   |
-   3- | L290 | Harry Potter and the Order of  |  N/A  | 2021/11/11 | J. K. Rowling   |
-   4- | R856 | Harry Potter and the Prisoner  |  N/A  | 2021/11/10 | J. K. Rowling   |
+   1- | F861 | Harry Potter and the Chamber o |  N/A  | 2023/11/24 | J. K. Rowling   |
+   2- | C945 | Harry Potter and the Goblet of |  N/A  | 2023/11/14 | J. K. Rowling   |
+   3- | L290 | Harry Potter and the Order of  |  N/A  | 2023/11/11 | J. K. Rowling   |
+   4- | R856 | Harry Potter and the Prisoner  |  N/A  | 2023/11/10 | J. K. Rowling   |
 > X (to Exit)
 > Row Number(select publication)
 >
@@ -1832,13 +1715,13 @@ Publication Title: Sen
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | P008 | MoneySense Magazine........... |  N/A  | 2021/11/11 |
-   2- | P008 | MoneySense Magazine........... | 72614 | 2021/11/16 |
-   3- | P008 | MoneySense Magazine........... | 48096 | 2021/11/17 |
-   4- | P008 | MoneySense Magazine........... | 89325 | 2021/11/17 |
-   5- | P008 | MoneySense Magazine........... | 33074 | 2021/11/17 |
-   6- | P008 | MoneySense Magazine........... |  N/A  | 2021/11/18 |
-   7- | P008 | MoneySense Magazine........... | 70451 | 2021/11/24 |
+   1- | P008 | MoneySense Magazine........... |  N/A  | 2023/11/11 |
+   2- | P008 | MoneySense Magazine........... | 72614 | 2023/11/16 |
+   3- | P008 | MoneySense Magazine........... | 48096 | 2023/11/17 |
+   4- | P008 | MoneySense Magazine........... | 89325 | 2023/11/17 |
+   5- | P008 | MoneySense Magazine........... | 33074 | 2023/11/17 |
+   6- | P008 | MoneySense Magazine........... |  N/A  | 2023/11/18 |
+   7- | P008 | MoneySense Magazine........... | 70451 | 2023/11/24 |
    8- | S001 | Seneca Student Handbook....... |  N/A  | 2022/01/05 |
 > X (to Exit)
 > Row Number(select publication)
@@ -1879,9 +1762,9 @@ Publication Title: Sen
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | P008 | MoneySense Magazine........... |  N/A  | 2021/11/11 |
-   2- | P008 | MoneySense Magazine........... |  N/A  | 2021/11/18 |
-   3- | S001 | Seneca Student Handbook....... |  N/A  | 2022/01/05 |
+   1- | P008 | MoneySense Magazine........... |  N/A  | 2023/11/11 |
+   2- | P008 | MoneySense Magazine........... |  N/A  | 2023/11/18 |
+   3- | S001 | Seneca Student Handbook....... |  N/A  | 2024/01/05 |
 > X (to Exit)
 > Row Number(select publication)
 > 3
@@ -1923,14 +1806,14 @@ Publication Title: Harry
 Select one of the following found matches:
  Row  |LocID | Title                          |Mem ID | Date       | Author          |
 ------+------+--------------------------------+-------+------------+-----------------|
-   1- | T343 | Harry Potter.................. | 65205 | 2021/11/19 | J. K. Rowling   |
-   2- | C872 | Harry Potter and the Deathly H | 64984 | 2021/11/17 | J. K. Rowling   |
-   3- | C332 | Harry Potter and the Half/Bloo | 85952 | 2021/11/22 | J. K. Rowling   |
-   4- | D208 | Harry Potter and the Philosoph | 72685 | 2021/11/19 | J. K. Rowling   |
+   1- | T343 | Harry Potter.................. | 65205 | 2023/11/19 | J. K. Rowling   |
+   2- | C872 | Harry Potter and the Deathly H | 64984 | 2023/11/17 | J. K. Rowling   |
+   3- | C332 | Harry Potter and the Half/Bloo | 85952 | 2023/11/22 | J. K. Rowling   |
+   4- | D208 | Harry Potter and the Philosoph | 72685 | 2023/11/19 | J. K. Rowling   |
 > X (to Exit)
 > Row Number(select publication)
 > 2
-| C872 | Harry Potter and the Deathly H | 64984 | 2021/11/17 | J. K. Rowling   |
+| C872 | Harry Potter and the Deathly H | 64984 | 2023/11/17 | J. K. Rowling   |
 Return Publication?
  1- Yes
  0- Exit
@@ -2077,7 +1960,7 @@ Data Entry:
 2
 S003
 News Daily
-2021/11/30
+2023/11/30
 1
 1
 0
